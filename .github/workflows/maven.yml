@@ -35,3 +35,18 @@ jobs:
           name: app.jar
           path: ${{ github.workspace }}/target/sonar.test.repo-0.0.1-SNAPSHOT.jar
 
+
+  image:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: app.jar
+      - name: Display structure of downloaded files
+        run: ls -R
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag sonar-test-image:$(date +%s)
+
