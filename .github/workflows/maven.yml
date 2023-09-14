@@ -33,9 +33,5 @@ jobs:
         uses: actions/checkout@v3
         with:
           name: app.jar
-          path: target/sonar.test.repo-0.0.1-SNAPSHOT.jar
-      - run: |
-          echo ${{ github.workspace }}
-          echo $GITHUB_WORKSPACE
-
+          path: ${{ github.workspace }}/target/sonar.test.repo-0.0.1-SNAPSHOT.jar
 
