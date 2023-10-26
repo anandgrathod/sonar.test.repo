@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.testcontainers.shaded.com.fasterxml.jackson.core.type.TypeReference;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -24,6 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class EmployeeControllerTest {
 
     MockMvc mockMvc;
+
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     EmployeeRepository employeeRepository;
@@ -55,5 +59,11 @@ class EmployeeControllerTest {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/emp/employees"))
                 .andExpect(status().isOk())
                 .andReturn();
+
+        List<Employee> myObjects = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Employee>>(){});
+
+        for(Employee employee : myObjects) {
+            System.out.println(employee.toString());
+        }
     }
 }
